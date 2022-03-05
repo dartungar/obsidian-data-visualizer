@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ObsidianDataVisualizer": {
+    "WebApp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ObsidianDataVisualizer:build:production"
+              "browserTarget": "WebApp:build:production"
             },
             "development": {
-              "browserTarget": "ObsidianDataVisualizer:build:development",
+              "browserTarget": "WebApp:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -81,7 +81,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ObsidianDataVisualizer:build"
+            "browserTarget": "WebApp:build"
           }
         },
         "test": {
@@ -129,5 +129,5 @@
       }
     }
   },
-  "defaultProject": "ObsidianDataVisualizer"
+  "defaultProject": "WebApp"
 }

@@ -1,4 +1,4 @@
-namespace ObsidianDataVisualizer
+namespace WebApp
 {
     public class WeatherForecast
     {

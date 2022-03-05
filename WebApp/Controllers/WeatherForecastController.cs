@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ObsidianDataVisualizer.Controllers
+namespace WebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
