@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataPreparer\DataProcessor.csproj" />
-    <ProjectReference Include="..\ObsidianParser\ObsidianParser.csproj" />
+    <ProjectReference Include="..\ObsidianParser\DataProvider.csproj" />
   </ItemGroup>
 
 </Project>

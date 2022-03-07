@@ -8,12 +8,13 @@ namespace ObsidianParser
     {
         private string _rawContent;
         private DateOnly _date;
-        private IEnumerable<RawDataPoint> _metadataFields;
+        private IEnumerable<MetadataFieldRaw> _metadataFieldsRaw = new List<MetadataFieldRaw>();
         private static Regex _wholeMetadataRegex = new Regex(@"---\n(.*\n)+---");
-        private static Regex _metadataLineRegex = new Regex(@"^(\w+)\s?:\s?(\w+|\[(\s?[\w]\s?,?){1,}\s?\])\n");
+        private static Regex _metadataLineRegex = new Regex(@"^(\w+)\s*:\s*(\w+|(\[(\s*[\w]\s*,?){1,}\s*\]))$");
 
         public DateOnly Date => _date;
-        public IEnumerable<RawDataPoint> Metadata => _metadataFields;
+        public IEnumerable<MetadataFieldRaw> MetadataRaw => _metadataFieldsRaw;
+        public IEnumerable<MetadataField> Metadata { get; private set; }
 
         public DailyNote(string content, DateOnly date)
         {
@@ -23,27 +24,43 @@ namespace ObsidianParser
         public void ParseMetadata()
         {
             var rawMetadata = ExtractRawMetadata();
-            var parsedMetadata = rawMetadata.Split('\n').Select(ParseMetadataFromLine);
-            _metadataFields = parsedMetadata.Where(m => m != null).Select(m => m.Value);
+            if (rawMetadata.Equals("")) return;
+            var parsedMetadata = rawMetadata.Split('\n').Select(l => ParseMetadataFromLine(l));
+            _metadataFieldsRaw = parsedMetadata.Where(m => m != null).Select(m => m.Value);
         }
+
+        public void CleanMetadata()
+        {
+            if (!_metadataFieldsRaw.Any()) return;
+            Metadata = _metadataFieldsRaw.Select(DailyNoteDataMapper.MapMetadataFieldValues);
+        }
+
+        public IEnumerable<DataPoint> GetDataPoints()
+        {
+            if (Metadata == null || !Metadata.Any()) return new List<DataPoint>();
+            return Metadata.Select(MetadataToDataPoint);
+        }
+
+        private DataPoint MetadataToDataPoint(MetadataField metadataField)  
+            => new DataPoint { Date = _date, Name = metadataField.Name, Values = metadataField.Values, Type = metadataField.Type };
+        
 
         private string ExtractRawMetadata() => _wholeMetadataRegex.Match(_rawContent).Groups[0].Value ?? throw new ParserException();
 
-        private RawDataPoint? ParseMetadataFromLine(string line)
+        private MetadataFieldRaw? ParseMetadataFromLine(string line)
         {
             var match = _metadataLineRegex.Match(line);
-            // multiple values
             if (!match.Success) return null;
 
-            var name = match.Groups[0].Value;
+            var name = match.Groups[1].Value;
             var values = new List<string>();
-            if (match.Groups[2].Success)
+            if (match.Groups[3].Success)
             {
-                values.AddRange(match.Groups[2].Value.Split(','));
+                values.AddRange(match.Groups[3].Value.Replace("[", string.Empty).Replace("]", string.Empty).Split(','));
             }
-            else values.Add(match.Groups[1].Value);
+            else values.Add(match.Groups[2].Value);
 
-            return new RawDataPoint { Name = name, Values = values };
+            return new MetadataFieldRaw { Name = name, Values = values.Select(v => v.Trim()).ToArray() };
         }
 
     }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataProcessor;
+﻿using DataProcessor;
 
 namespace ObsidianParser
 {
-    internal class DailyNoteDataMapper : IDataValueMapper
+    internal class DailyNoteDataMapper
     {
-        public Dictionary<string, object> Mappings => new Dictionary<string, object>
+        static Dictionary<string, object> Mappings => new Dictionary<string, object>
         {
             {"yes", true },
             {"no", false },
@@ -21,15 +16,18 @@ namespace ObsidianParser
             {"very high", 5 },
         };
 
-        public ProcessedDataPoint MapRawDataPoint(RawDataPoint point)
+
+        public static MetadataField MapMetadataFieldValues(MetadataFieldRaw point)
         {
-            return new ProcessedDataPoint 
-            { 
-                Name = point.Name, 
-                Values = point.Values.Select(v => Mappings.ContainsKey(v) ? Mappings[v] : v) 
+            var values = point.Values.Select(v => Mappings.ContainsKey(v) ? Mappings[v] : v).ToArray();
+            var types = values.Select(v => v.GetType()).Distinct();
+            var type = types.Count() == 1 ? types.First() : typeof(string); 
+            return new MetadataField
+            {
+                Name = point.Name,
+                Values = point.Values.Select(v => Mappings.ContainsKey(v) ? Mappings[v].ToString() : v).ToArray(),
+                Type = type,
             };
         }
-
-
     }
 }

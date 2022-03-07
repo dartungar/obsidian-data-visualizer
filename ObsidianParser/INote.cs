@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataProcessor;
 
 namespace ObsidianParser
 {
@@ -13,7 +9,10 @@ namespace ObsidianParser
     
     internal interface INote
     {
-        public IEnumerable<DataPoint> Metadata { get; }
+        public IEnumerable<MetadataFieldRaw> MetadataRaw { get; }
+        public IEnumerable<MetadataField> Metadata { get; }
         public void ParseMetadata();
+        public void CleanMetadata();
+        public IEnumerable<DataPoint> GetDataPoints();
     }
 }

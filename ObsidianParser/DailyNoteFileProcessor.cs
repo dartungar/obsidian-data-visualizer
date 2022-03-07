@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using DataProcessor;
 using System.Text.RegularExpressions;
 using ObsidianParser.Exceptions;
 
@@ -11,32 +6,38 @@ namespace ObsidianParser
 {
     internal class DailyNoteFileProcessor
     {
-        private List<IDailyNote> _notes;
+        private List<IDailyNote> _notes = new List<IDailyNote>();
 
         private string _folderPath;
         private string _dailyNoteFormatForRegex;
 
-        public DailyNoteFileProcessor(string path, string dailyNoteFormatForRegex = @"\d\d\d\d-\d\d-\d\d")
+        internal DailyNoteFileProcessor(string path, string dailyNoteFormatForRegex = @"\d\d\d\d-\d\d-\d\d")
         {
             _folderPath = path;
             _dailyNoteFormatForRegex = dailyNoteFormatForRegex;
         }
 
-        public void ReadAndProcessFilesIntoNotes()
+        internal void ReadAndProcessFilesIntoNotes()
         {
             if (_folderPath == null) throw new FileReadingException();
             var files = Directory.GetFiles(this._folderPath);
-            foreach (var fileName in files)
+            foreach (var file in files)
             {
-                var date = ParseDateFromFileName(fileName);
+                var date = ParseDateFromFileName(file);
                 // parse only files which (at least in part) adhere to dailyNoteFormatForRegex
                 if (date == null) continue; 
 
-                var fileContent = File.ReadAllText(_folderPath + fileName);
+                var fileContent = File.ReadAllText(file);
                 var note = new DailyNote(fileContent, date.Value);
                 note.ParseMetadata();
                 _notes.Add(note);
             }
+        }
+
+        internal IEnumerable<DataPoint> GetData()
+        {
+            _notes.ForEach(n => n.CleanMetadata());
+            return _notes.SelectMany(n => n.GetDataPoints());
         }
 
         private DateOnly? ParseDateFromFileName(string fileName)
