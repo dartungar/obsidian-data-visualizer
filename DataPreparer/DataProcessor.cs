@@ -1,4 +1,6 @@
-﻿namespace DataProcessor
+﻿using Common;
+
+namespace DataProcessor
 {
     public class DataProcessor
     {
@@ -15,8 +17,17 @@
         public void ProcessData()
         {
             _dateRange = new Tuple<DateOnly, DateOnly>(DataPoints.Select(d => d.Date).Min(), DataPoints.Select(d => d.Date).Max());
-            _fields = DataPoints.Select(d => new FieldShape { Name = d.Name, ValueType = d.Type }).Distinct();
+            _fields = DataPoints.Select(d => 
+                new FieldShape { Name = d.Name, ValueType = d.Type })
+                .Distinct();
             _dataShape = new DataShape() { DateRange = _dateRange , Fields = _fields };
+
+            _fields.ToList().ForEach(FillUniqueValues);
+
+            void FillUniqueValues(FieldShape fs)
+            {
+                fs.UniqueValues = DataPoints.FilterByName(fs.Name).SelectMany(dp => dp.Values).Distinct().ToArray();
+            }
         }
 
         public DataShape GetDataShape() => _dataShape;
@@ -41,17 +52,6 @@
                 Name = fieldName,
                 Entries = data.ToDictionary(d => d.Date.ToString(), d => d.Values)
             };
-        }
-
-
-
-        public Dictionary<string, int> GetValueCount(string fieldName)
-        {
-            var data = DataPoints.FilterByName(fieldName);
-            var allValues = data.SelectMany(d => d.Values);
-            var distinctValues = allValues.Distinct();
-            return distinctValues.ToDictionary(d => d, d => allValues.Where(v => v == d).Count());
-
         }
     }
 }

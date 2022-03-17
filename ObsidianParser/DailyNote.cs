@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using DataProcessor;
 using ObsidianParser.Exceptions;
+using Common;
 
 namespace ObsidianParser
 {

@@ -1,4 +1,5 @@
-﻿using DataProcessor;
+﻿using Common;
+using DataProcessor;
 
 namespace ObsidianParser
 {
@@ -8,6 +9,11 @@ namespace ObsidianParser
         public ObsidianDataProvider(string dataFolderPath)
         {
             _processor = new DailyNoteFileProcessor(dataFolderPath);
+        }
+
+        public ObsidianDataProvider(string dataFolderPath, string dailyNoteFormatForRegex)
+        {
+            _processor = new DailyNoteFileProcessor(dataFolderPath, dailyNoteFormatForRegex);
         }
 
         public void ReadData() => _processor.ReadAndProcessFilesIntoNotes();

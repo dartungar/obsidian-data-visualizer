@@ -1,6 +1,7 @@
 ﻿using DataProcessorClass = DataProcessor.DataProcessor;
 using DataProcessor;
 using ObsidianParser;
+using Common;
 
 namespace Core
 {
@@ -17,9 +18,15 @@ namespace Core
             _dataProvider.ReadData();
         }
 
-        public void GetData() 
+        public void InitDataProvider(string filepath, string dailyNoteFormatForRegex)
         {
-            _data = _dataProvider.GetData().ToList();            
+            _dataProvider = new ObsidianDataProvider(filepath, dailyNoteFormatForRegex);
+            _dataProvider.ReadData();
+        }
+
+        public void GetRawData() 
+        {
+            _data = _dataProvider.GetData();            
         }
 
         public void ProcessData()

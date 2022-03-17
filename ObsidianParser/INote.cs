@@ -1,4 +1,4 @@
-﻿using DataProcessor;
+﻿using Common;
 
 namespace ObsidianParser
 {

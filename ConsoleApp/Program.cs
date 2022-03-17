@@ -8,7 +8,7 @@ Console.WriteLine($"path: {pathString}");
 
 var service = new CoreService();
 service.InitDataProvider(pathString);
-service.GetData();
+service.GetRawData();
 service.ProcessData();
 var testData = service.GetTimeSeries("productivity");
 Console.WriteLine(JsonSerializer.Serialize(testData));

@@ -1,4 +1,4 @@
-﻿using DataProcessor;
+﻿using Common;
 using System.Text.RegularExpressions;
 using ObsidianParser.Exceptions;
 
