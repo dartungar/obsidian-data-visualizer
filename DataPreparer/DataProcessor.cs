@@ -16,11 +16,13 @@ namespace DataProcessor
 
         public void ProcessData()
         {
+            if (!DataPoints.Any()) return;
+
             _dateRange = new Tuple<DateOnly, DateOnly>(DataPoints.Select(d => d.Date).Min(), DataPoints.Select(d => d.Date).Max());
-            _fields = DataPoints.Select(d => 
+            _fields = DataPoints.Select(d =>
                 new FieldShape { Name = d.Name, ValueType = d.Type })
                 .Distinct();
-            _dataShape = new DataShape() { DateRange = _dateRange , Fields = _fields };
+            _dataShape = new DataShape() { DateRange = _dateRange, Fields = _fields };
 
             _fields.ToList().ForEach(FillUniqueValues);
 
