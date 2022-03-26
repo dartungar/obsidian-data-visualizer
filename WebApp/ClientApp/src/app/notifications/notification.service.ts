@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-enum AlertType {
+export enum AlertType {
   info,
   success,
   error,
 }
 
-class Alert {
+export class Alert {
   constructor(public message: string, public type: AlertType) {}
 }
 
@@ -37,5 +37,10 @@ export class NotificationService {
 
   public PopAlert(): void {
     this.alerts.pop();
+  }
+
+  public GetNewestAlert(): Alert | null {
+    if (this.alerts) return this.alerts[this.alerts.length - 1];
+    return null;
   }
 }

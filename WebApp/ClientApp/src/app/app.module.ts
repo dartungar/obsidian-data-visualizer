@@ -12,6 +12,7 @@ import { DataLoaderComponent } from './data-loader/data-loader/data-loader.compo
 import { DashboardComponent } from './visualizer/dashboard/dashboard.component';
 import { LayoutComponent } from './general/layout/layout.component';
 import { DataExplorerComponent } from './visualizer/data-explorer/data-explorer.component';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NavComponent, LayoutComponent],
@@ -27,6 +28,7 @@ import { DataExplorerComponent } from './visualizer/data-explorer/data-explorer.
     FormsModule,
     DataLoaderModule,
     VisualizerModule,
+    NotificationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

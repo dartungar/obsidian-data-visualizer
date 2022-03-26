@@ -1,1 +1,8 @@
-<p>notification works!</p>
+<div
+  class="notification is-light"
+  *ngIf="_service.alerts.length"
+  [ngClass]="getClass()"
+>
+  <button class="delete" (click)="onAlertClose()"></button>
+  {{ getCurrentAlert()?.message }}
+</div>

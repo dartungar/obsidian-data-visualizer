@@ -1,0 +1,6 @@
+div.notification {
+  position: fixed;
+  bottom: 3rem;
+  z-index: 300;
+  width: 80%;
+}
