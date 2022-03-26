@@ -12,10 +12,10 @@ namespace WebApp.Controllers
     {
         private ILogger<DataController> _logger;
         private readonly CoreService _service;
-        public DataController(ILogger<DataController> logger)
+        public DataController(ILogger<DataController> logger, CoreService service)
         {
             _logger = logger;
-            _service = new CoreService();
+            _service = service;
         }
 
 

@@ -4,7 +4,7 @@ namespace ObsidianParser
 {
     internal interface IDailyNote: INote
     {
-        public DateOnly Date { get; }
+        public DateTime Date { get; }
     }
     
     internal interface INote

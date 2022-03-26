@@ -12,4 +12,6 @@ service.GetRawData();
 service.ProcessData();
 var testData = service.GetTimeSeries("productivity");
 Console.WriteLine(JsonSerializer.Serialize(testData));
+var shape = service.GetDataShape();
+Console.WriteLine(JsonSerializer.Serialize(shape));
 Console.ReadLine();

@@ -31,6 +31,7 @@ export class NotificationService {
   }
 
   private Alert(message: string, type: AlertType): void {
+    console.log(message);
     this.alerts.push(new Alert(message, type));
   }
 

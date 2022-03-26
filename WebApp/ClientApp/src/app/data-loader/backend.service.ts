@@ -6,7 +6,7 @@ import {
   HttpErrorResponse,
   HttpParams,
 } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { NotificationService } from '../notifications/notification.service';
 import { environment } from '../../environments/environment';
@@ -49,15 +49,24 @@ export class BackendService {
       });
   }
 
+  // todo: check if data loaded
   getDataShape() {
+    if (!this.dataIsLoaded) {
+      this.alertService.ErrorAlert(
+        `To get data shape, data must be loaded first.`
+      );
+      return;
+    }
+
+    if (!this.dataShape) this.loadDataShape().subscribe(data => this.dataShape = data);
     return this.dataShape;
   }
 
-  loadDataShape(): void {
-    this.http
+  // TODO: check if data loaded
+  private loadDataShape(): Observable<DataShape> {
+    return this.http
       .get<DataShape>(this.baseUrl + 'shape')
-      .pipe(catchError(this.handleError))
-      .subscribe((ds) => (this.dataShape = ds));
+      .pipe(catchError(this.handleError));
   }
 
   getTimeSeries(fieldName: string): TimeSeries {

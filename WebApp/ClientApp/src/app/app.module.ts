@@ -9,8 +9,9 @@ import { VisualizerModule } from './visualizer/visualizer.module';
 import { NavComponent } from './general/nav/nav.component';
 import { RouterModule } from '@angular/router';
 import { DataLoaderComponent } from './data-loader/data-loader/data-loader.component';
-import { DashboardComponent } from './visualizer/charts/dashboard/dashboard.component';
+import { DashboardComponent } from './visualizer/dashboard/dashboard.component';
 import { LayoutComponent } from './general/layout/layout.component';
+import { DataExplorerComponent } from './visualizer/data-explorer/data-explorer.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NavComponent, LayoutComponent],
@@ -19,7 +20,8 @@ import { LayoutComponent } from './general/layout/layout.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'load', component: DataLoaderComponent },
-      { path: 'charts', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'explore', component: DataExplorerComponent },
     ]),
     HttpClientModule,
     FormsModule,

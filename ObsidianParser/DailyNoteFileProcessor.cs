@@ -40,12 +40,12 @@ namespace ObsidianParser
             return _notes.SelectMany(n => n.GetDataPoints());
         }
 
-        private DateOnly? ParseDateFromFileName(string fileName)
+        private DateTime? ParseDateFromFileName(string fileName)
         {
             var dateRegex = new Regex(_dailyNoteFormatForRegex);
             var match = dateRegex.Match(fileName);
             if (!match.Success) return null;
-            var dateIsValid = DateOnly.TryParse(match.Value, out DateOnly date);
+            var dateIsValid = DateTime.TryParse(match.Value, out DateTime date);
             return dateIsValid ? date : null;
         }
     }

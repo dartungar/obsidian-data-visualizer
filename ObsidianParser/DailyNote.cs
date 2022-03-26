@@ -7,16 +7,16 @@ namespace ObsidianParser
     public class DailyNote: IDailyNote
     {
         private string _rawContent;
-        private DateOnly _date;
+        private DateTime _date;
         private IEnumerable<MetadataFieldRaw> _metadataFieldsRaw = new List<MetadataFieldRaw>();
         private static Regex _wholeMetadataRegex = new Regex(@"---\n(.*\n)+---");
         private static Regex _metadataLineRegex = new Regex(@"^(\w+)\s*:\s*(\w+|(\[(\s*[\w]\s*,?){1,}\s*\]))$");
 
-        public DateOnly Date => _date;
+        public DateTime Date => _date;
         public IEnumerable<MetadataFieldRaw> MetadataRaw => _metadataFieldsRaw;
         public IEnumerable<MetadataField> Metadata { get; private set; }
 
-        public DailyNote(string content, DateOnly date)
+        public DailyNote(string content, DateTime date)
         {
             _rawContent = content;
             _date = date;
