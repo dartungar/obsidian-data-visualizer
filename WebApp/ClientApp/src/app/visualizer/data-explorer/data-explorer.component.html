@@ -1,1 +1,13 @@
-<p>data-explorer works!</p>
+<h1 class="title">Explore data</h1>
+<table class="table">
+  <tr>
+    <th>Field name</th>
+    <th>Value type</th>
+    <th>Distinct values</th>
+  </tr>
+  <tr *ngFor="let field of backend.dataShape?.fields">
+    <td>{{ field.name }}</td>
+    <td>{{ field.valueType }}</td>
+    <td>{{ field.uniqueValues }}</td>
+  </tr>
+</table>

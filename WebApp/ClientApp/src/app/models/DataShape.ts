@@ -5,6 +5,6 @@ export interface DataShape {
 
 export interface FieldShape {
   name: string;
-  type: string; // TODO: get proper typing; generics?..
+  valueType: string; // TODO: get proper typing; generics?..
   uniqueValues: string[];
 }

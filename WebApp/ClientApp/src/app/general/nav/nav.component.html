@@ -1,7 +1,11 @@
 <aside class="menu">
   <ul class="menu-list">
     <li><a routerLink="/load">Load Data</a></li>
-    <li><a routerLink="/dashboard">Dashboard</a></li>
-    <li><a routerLink="/explore">Explore Data</a></li>
+    <li *ngIf="backend.dataIsLoaded">
+      <a routerLink="/dashboard">Dashboard</a>
+    </li>
+    <li *ngIf="backend.dataIsLoaded">
+      <a routerLink="/explore">Explore Data</a>
+    </li>
   </ul>
 </aside>

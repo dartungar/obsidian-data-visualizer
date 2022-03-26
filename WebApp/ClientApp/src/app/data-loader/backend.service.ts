@@ -16,8 +16,8 @@ import { environment } from '../../environments/environment';
 })
 export class BackendService {
   public isLoading = false;
-  private dataIsLoaded = false; // TODO: better way to track loading state?
-  private dataShape: DataShape | undefined;
+  public dataIsLoaded = false; // TODO: better way to track loading state?
+  public dataShape: DataShape | undefined;
   private timeSeriesCollection: TimeSeries[] = [];
   private baseUrl = '/api/data/';
 
