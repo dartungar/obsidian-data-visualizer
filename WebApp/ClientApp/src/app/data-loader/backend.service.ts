@@ -15,6 +15,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class BackendService {
+  public isLoading = false;
   private dataIsLoaded = false; // TODO: better way to track loading state?
   private dataShape: DataShape | undefined;
   private timeSeriesCollection: TimeSeries[] = [];
@@ -28,6 +29,7 @@ export class BackendService {
   // TODO: pass filename regex
   loadAndProcessDataFromFolder(path: string, filenameRegex: string): void {
     console.log(path, filenameRegex);
+    this.isLoading = true;
     this.http
       .post(
         this.baseUrl + 'load',
@@ -46,6 +48,7 @@ export class BackendService {
         } else {
           this.dataIsLoaded = false;
         }
+        this.isLoading = false;
       });
   }
 
@@ -58,7 +61,14 @@ export class BackendService {
       return;
     }
 
-    if (!this.dataShape) this.loadDataShape().subscribe(data => this.dataShape = data);
+    if (!this.dataShape) {
+      this.isLoading = true;
+      this.loadDataShape().subscribe((data) => {
+        this.dataShape = data;
+        this.isLoading = false;
+      });
+    }
+
     return this.dataShape;
   }
 

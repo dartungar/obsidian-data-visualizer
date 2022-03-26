@@ -1,4 +1,4 @@
-<div class="has-text-centered">
-  <button class="button" (click)="loadData()">Load data</button>
-  <button class="button" (click)="getDataShape()">Get data shape</button>
-</div>
+<app-data-loader-form></app-data-loader-form>
+<progress class="progress is-small" max="100" *ngIf="backend.isLoading">
+  15%
+</progress>

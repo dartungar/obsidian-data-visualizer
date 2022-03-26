@@ -7,10 +7,9 @@ import { BackendService } from '../backend.service';
   styleUrls: ['./data-loader.component.css'],
 })
 export class DataLoaderComponent implements OnInit {
-  constructor(private backend: BackendService) {}
+  constructor(public backend: BackendService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   loadData(): void {
     this.loadDataDefault();

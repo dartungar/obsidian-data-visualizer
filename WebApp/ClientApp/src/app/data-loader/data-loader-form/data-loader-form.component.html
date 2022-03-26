@@ -1,0 +1,37 @@
+<div class="column is-half">
+  <fieldset [disabled]="backend.isLoading">
+    <div class="field">
+      <label class="label" for="path">Folder path:</label>
+      <div class="control">
+        <input
+          class="input"
+          id="path"
+          type="text"
+          [formControl]="pathControl"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="path">Filename Regex:</label>
+      <div class="control">
+        <input
+          class="input"
+          id="path"
+          type="text"
+          [formControl]="filenameRegexControl"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <button class="button is-link is-light" (click)="loadData()">
+          Load data
+        </button>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<!-- <button class="button" (click)="getDataShape()">Get data shape</button> -->
