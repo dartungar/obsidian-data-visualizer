@@ -1,1 +1,29 @@
 <h1 class="Title">Dashboard</h1>
+<form [formGroup]="fieldNameForm">
+  <fieldset>
+    <div class="field">
+      <label class="label">Choose field from dataset:</label>
+      <div class="control">
+        <div class="select">
+          <select formControlName="fieldName">
+            <option value="">choose field</option>
+            <option
+              *ngFor="let field of backend.dataShape?.fields"
+              [ngValue]="field.name"
+            >
+              {{ field.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+      <div class="control">
+        <button class="button is-link" (click)="onSubmit()">Add chart</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<!-- TODO: select chart type mapping from ChartType enum -->
+<app-chart [chartType]="1" [fieldNames]="['phase']"></app-chart>

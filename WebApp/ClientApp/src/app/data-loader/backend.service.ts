@@ -18,7 +18,8 @@ export class BackendService {
   public isLoading = false;
   public dataIsLoaded = false; // TODO: better way to track loading state?
   public dataShape: DataShape | undefined;
-  private timeSeriesCollection: TimeSeries[] = [];
+  public dataAggregate: Object | undefined; // TODO - strict typing for aggregate, like field, unique values / sum of int values, average, etc; computed @ server
+  public data: TimeSeries[] = [];
   private baseUrl = '/api/data/';
 
   constructor(
@@ -26,7 +27,6 @@ export class BackendService {
     private alertService: NotificationService
   ) {}
 
-  // TODO: pass filename regex
   loadAndProcessDataFromFolder(path: string, filenameRegex: string): void {
     console.log(path, filenameRegex);
     this.isLoading = true;
@@ -42,8 +42,9 @@ export class BackendService {
       .pipe(catchError(this.handleError))
       .subscribe((resp) => {
         if (resp.ok) {
+          this.getDataShape(); // убрать отсюда, сделать более системно
           this.dataIsLoaded = true;
-          this.timeSeriesCollection = []; // clear old data
+          this.data = []; // clear old data
           this.alertService.SuccessAlert('Loaded and processed data');
         } else {
           this.dataIsLoaded = false;
@@ -80,20 +81,23 @@ export class BackendService {
   }
 
   getTimeSeries(fieldName: string): TimeSeries {
-    return this.timeSeriesCollection.filter((ts) => ts.name === fieldName)[0];
+    var suitableTimeSeries = this.data.filter((ts) => ts.name === fieldName);
+    if (suitableTimeSeries.length === 0)
+      this.loadTimeSeries(fieldName).subscribe((ts) => {
+        this.data.push(ts);
+        return ts;
+      });
+    return suitableTimeSeries[0];
   }
 
-  loadTimeSeries(fieldName: string): void {
+  loadTimeSeries(fieldName: string): Observable<TimeSeries> {
     // delete old data
-    this.timeSeriesCollection = this.timeSeriesCollection.filter(
-      (ts) => ts.name !== fieldName
-    );
-    this.http
+    this.data = this.data.filter((ts) => ts.name !== fieldName);
+    return this.http
       .get<TimeSeries>(this.baseUrl + 'timeseries', {
         params: new HttpParams().set('fieldName', fieldName),
       })
-      .pipe(catchError(this.handleError))
-      .subscribe((ts) => this.timeSeriesCollection.push(ts));
+      .pipe(catchError(this.handleError));
   }
 
   handleError(error: HttpErrorResponse, object: Object) {

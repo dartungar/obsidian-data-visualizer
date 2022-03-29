@@ -1,1 +1,8 @@
-<p>chart works!</p>
+<ngx-charts-line-chart
+  *ngIf="chartData.length > 0 && chartData[0]"
+  [view]="view"
+  [results]="chartData"
+  [yAxisLabel]="yAxisLabel"
+  [xAxisLabel]="xAxisLabel"
+>
+</ngx-charts-line-chart>
