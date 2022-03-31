@@ -12,7 +12,7 @@ namespace ObsidianParser
         public IEnumerable<MetadataFieldRaw> MetadataRaw { get; }
         public IEnumerable<MetadataField> Metadata { get; }
         public void ParseMetadata();
-        public void CleanMetadata();
+        public void PrepareMetadata();
         public IEnumerable<DataPoint> GetDataPoints();
     }
 }

@@ -19,18 +19,18 @@ namespace DataProcessor
             if (!DataPoints.Any()) return;
 
             _dateRange = new Tuple<DateTime, DateTime>(DataPoints.Select(d => d.Date).Min(), DataPoints.Select(d => d.Date).Max());
-            _fields = DataPoints.Select(d =>
-                new FieldShape { Name = d.Name, ValueType = d.Type.Name, UniqueValues = DataPoints.FilterByName(d.Name).SelectMany(dp => dp.Values).Distinct().ToArray() })
+            
+            _fields = DataPoints.DistinctBy(dp => new { dp.Name, dp.Value}).Select(d =>
+                new FieldShape { 
+                    Name = d.Name, 
+                    ValueType = d.Type.Name, 
+                    UniqueValues = GetUniqueValues(d.Name) })
                 .DistinctBy(fs => fs.Name).ToList();
-            _fields.ForEach(FillUniqueValues);
 
             _dataShape = new DataShape() { DateRange = _dateRange, Fields = _fields };
 
-            void FillUniqueValues(FieldShape fs)
-            {
-                var uniq = DataPoints.FilterByName(fs.Name).SelectMany(dp => dp.Values).Distinct().ToArray();
-                fs.UniqueValues = DataPoints.FilterByName(fs.Name).SelectMany(dp => dp.Values).Distinct().ToArray();
-            }
+            string[] GetUniqueValues(string fieldName) => DataPoints.FilterByName(fieldName)?.Select(dp => dp.Value).Distinct().ToArray();
+
         }
 
         public DataShape GetDataShape() => _dataShape;
@@ -40,10 +40,7 @@ namespace DataProcessor
         public IEnumerable<TimeSeries> GetTimeSeries(IEnumerable<string> fieldNames)
             => fieldNames.Select(fieldName => GetTimeSeries(fieldName)).Where(ts => ts != null).Select(ts => ts.Value);
 
-        // вероятно именно так я и буду это дело использовать:
-        // 1. Получаем форму данных
-        // 2. Выбираем на основе списка доступных полей поле
-        // 3. Получаем данные с сервера по этому полю для построения данных
+
         public TimeSeries? GetTimeSeries(string fieldName)
         {
             var data = DataPoints.FilterByName(fieldName);
@@ -53,7 +50,12 @@ namespace DataProcessor
             return new TimeSeries()
             {
                 Name = fieldName,
-                Entries = data.ToDictionary(d => d.Date.ToString(), d => d.Values)
+                ValueType = data.First().Type.Name,
+                Entries = data.Select(e => new TimeSeriesEntry
+                {
+                    Name = e.Date.ToString(),
+                    Value = e.Value,
+                }).ToArray(),
             };
         }
     }

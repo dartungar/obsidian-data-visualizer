@@ -80,14 +80,15 @@ export class BackendService {
       .pipe(catchError(this.handleError));
   }
 
-  getTimeSeries(fieldName: string): TimeSeries {
-    var suitableTimeSeries = this.data.filter((ts) => ts.name === fieldName);
-    if (suitableTimeSeries.length === 0)
-      this.loadTimeSeries(fieldName).subscribe((ts) => {
-        this.data.push(ts);
-        return ts;
-      });
-    return suitableTimeSeries[0];
+  loadMultipleTipeSeries(fieldNames: string[]): Observable<TimeSeries[]> {
+    // TODO: clean current data
+    return this.http.post<TimeSeries[]>(
+      this.baseUrl + 'timeseries',
+      JSON.stringify({ fieldNames }),
+      {
+        headers: { 'content-type': 'application/json' },
+      }
+    ).pipe(catchError(this.handleError));
   }
 
   loadTimeSeries(fieldName: string): Observable<TimeSeries> {

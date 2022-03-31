@@ -36,7 +36,7 @@ namespace ObsidianParser
 
         internal IEnumerable<DataPoint> GetData()
         {
-            _notes.ForEach(n => n.CleanMetadata());
+            _notes.ForEach(n => n.PrepareMetadata());
             return _notes.SelectMany(n => n.GetDataPoints());
         }
 

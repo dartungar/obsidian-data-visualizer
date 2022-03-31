@@ -48,14 +48,19 @@ namespace WebApp.Controllers
         [HttpGet("timeseries")]
         public async Task<TimeSeries?> GetTimeSeries(string fieldName)
         {
-            var ts = await Task.Run(() => _service.GetTimeSeries(fieldName));
-            // TODO: proper typing
-            var res = new
-            {
-                name = ts.Value.Name,
-                entries = ts.Value.Entries.ToArray() // TODO: to 'series'
-            };
             return await Task.Run(() => _service.GetTimeSeries(fieldName));
+        }
+
+        [HttpPost("timeseries")]
+        public async Task<TimeSeries[]> GetMultipleTimeSeries(GetMultipleTimeSeriesRequestParams requestParams)
+        {
+            return await Task.Run(() => requestParams.FieldNames.Select(
+                f => _service.GetTimeSeries(f)).Where(ts => ts != null).Select(ts => ts.Value).ToArray());
+        }
+
+        public struct GetMultipleTimeSeriesRequestParams
+        {
+            public string[] FieldNames { get; set; }
         }
     }
 }

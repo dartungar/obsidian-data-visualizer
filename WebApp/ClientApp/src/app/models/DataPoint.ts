@@ -1,7 +1,6 @@
 export interface DataPoint {
   name: string;
-  //value: string[];
-  values: string[];
+  value: string;
   type?: string;
 }
 

@@ -12,8 +12,10 @@ namespace ObsidianParser
             {"very low", 1 },
             {"low", 2 },
             {"medium", 3 },
-            {"high", 4 },
+            {"high", 4 }, // TODO: per field dictionary: Name of field, Dictionary
             {"very high", 5 },
+            {"stable", 4 },
+            {"volatile", 3  }
         };
 
 

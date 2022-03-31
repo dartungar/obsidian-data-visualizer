@@ -5,7 +5,15 @@ namespace Common
     public struct TimeSeries
     {
         public string Name { get; init; }
-        public Dictionary<string, string[]> Entries { get; init; }
+        public string ValueType { get; init; }
+        public TimeSeriesEntry[] Entries { get; init; }
 
+    }
+
+    [Serializable]
+    public struct TimeSeriesEntry
+    {
+        public string Name { get; init; }
+        public string Value { get; init; }
     }
 }

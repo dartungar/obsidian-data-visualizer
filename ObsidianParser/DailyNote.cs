@@ -29,20 +29,33 @@ namespace ObsidianParser
             _metadataFieldsRaw = parsedMetadata.Where(m => m != null).Select(m => m.Value);
         }
 
-        public void CleanMetadata()
+        /// <summary>
+        /// Prepare metadata for transformation into <see cref="DataPoint"/>s
+        /// </summary>
+        public void PrepareMetadata()
         {
             if (!_metadataFieldsRaw.Any()) return;
             Metadata = _metadataFieldsRaw.Select(DailyNoteDataMapper.MapMetadataFieldValues);
         }
 
+        /// <summary>
+        /// Get note's data in form of <see cref="DataPoint"/>
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<DataPoint> GetDataPoints()
         {
             if (Metadata == null || !Metadata.Any()) return new List<DataPoint>();
-            return Metadata.Select(MetadataToDataPoint);
+            return Metadata.SelectMany(MetadataToDataPoints);
         }
 
-        private DataPoint MetadataToDataPoint(MetadataField metadataField)  
-            => new DataPoint { Date = _date, Name = metadataField.Name, Values = metadataField.Values, Type = metadataField.Type };
+        private IEnumerable<DataPoint> MetadataToDataPoints(MetadataField metadataField)   
+            => metadataField.Values.Select(value => new DataPoint
+            {
+                Name = metadataField.Name,
+                Date = _date,
+                Value = value,
+                Type = metadataField.Type,
+            });
         
 
         private string ExtractRawMetadata() => _wholeMetadataRegex.Match(_rawContent).Groups[0].Value ?? throw new ParserException();

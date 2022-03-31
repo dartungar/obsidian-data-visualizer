@@ -1,7 +1,8 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { BackendService } from 'src/app/data-loader/backend.service';
-import { TimeSeries } from 'src/app/models/TimeSeries';
+import { TimeSeries, TimeSeriesNgxCharts, TimeSeriesToNgxFormat } from 'src/app/models/TimeSeries';
 import { NotificationService } from 'src/app/notifications/notification.service';
+import { map } from "rxjs/operators";
 
 enum ChartType {
   lineChart,
@@ -20,10 +21,13 @@ enum ChartType {
 export class ChartComponent implements OnInit {
   @Input() fieldNames: string[] = [];
   @Input() chartType: ChartType = ChartType.lineChart;
-  chartData: any[] = []; // FIX ME
+  chartData: TimeSeriesNgxCharts[] = []; // FIX ME
   view: any = [700, 300];
-  xAxisLabel: string = 'Year';
-  yAxisLabel: string = 'Population';
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  xAxisLabel: string = 'Date';
+  yAxisLabel: string = 'Points';
+  timeline: boolean = true;
 
   constructor(
     private backend: BackendService,
@@ -32,32 +36,19 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.initData(this.fieldNames);
+    console.log("Loaded all data:", this.chartData);
   }
 
+  // TODO: move most of loading logic into BackendService, clean mess up
   initData(fieldNames: string[]): void {
     this.chartData = [];
-    console.log(fieldNames);
-    fieldNames.forEach((field) => {
-      try {
-        this.backend.loadTimeSeries(field).subscribe((ts) => {
-          console.log(ts);
-          console.log(Array.from(ts.entries));
-          var data = {
-            name: ts.name,
-            series: ts.entries.map((e) => {
-              return {
-                name: e.name,
-                value: e.values[0],
-              };
-            }),
-          };
-          this.chartData.push(data);
-          console.log(this.chartData);
-        });
-      } catch (error) {
-        this.notifications.ErrorAlert(`Error loading data for chart: ${error}`);
-      }
-    });
-    //console.log(this.chartData);
+    this.backend.loadMultipleTipeSeries(fieldNames)
+      //.pipe(map<TimeSeries[], TimeSeriesNgxCharts[]>(
+      //  tsCollection => tsCollection.map<TimeSeriesNgxCharts>(
+      //    ts => TimeSeriesToNgxFormat(ts))
+      .subscribe(tsCollection => {
+        this.chartData = tsCollection.map(TimeSeriesToNgxFormat);
+        console.log("tsCollection:", this.chartData)
+      });
   }
 }
