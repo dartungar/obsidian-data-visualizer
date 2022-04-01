@@ -40,8 +40,8 @@ namespace Core
         public DataShape GetDataShape() => _dataProcessor.GetDataShape();
 
 
-        public IEnumerable<TimeSeries> GetTimeSeries(IEnumerable<string> fieldNames) => _dataProcessor.GetTimeSeries(fieldNames);
-        public TimeSeries? GetTimeSeries(string fieldName) => _dataProcessor.GetTimeSeries(fieldName);
+        public IEnumerable<DataSeries> GetTimeSeries(IEnumerable<string> fieldNames) => _dataProcessor.GetTimeSeries(fieldNames);
+        public DataSeries? GetTimeSeries(string fieldName) => _dataProcessor.GetTimeSeries(fieldName);
 
     }
 }

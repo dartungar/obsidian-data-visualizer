@@ -46,13 +46,13 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("timeseries")]
-        public async Task<TimeSeries?> GetTimeSeries(string fieldName)
+        public async Task<DataSeries?> GetTimeSeries(string fieldName)
         {
             return await Task.Run(() => _service.GetTimeSeries(fieldName));
         }
 
         [HttpPost("timeseries")]
-        public async Task<TimeSeries[]> GetMultipleTimeSeries(GetMultipleTimeSeriesRequestParams requestParams)
+        public async Task<DataSeries[]> GetMultipleTimeSeries(GetMultipleTimeSeriesRequestParams requestParams)
         {
             return await Task.Run(() => requestParams.FieldNames.Select(
                 f => _service.GetTimeSeries(f)).Where(ts => ts != null).Select(ts => ts.Value).ToArray());

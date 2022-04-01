@@ -37,21 +37,21 @@ namespace DataProcessor
 
         public Tuple<DateTime, DateTime> GetDateRange() => _dateRange;
 
-        public IEnumerable<TimeSeries> GetTimeSeries(IEnumerable<string> fieldNames)
+        public IEnumerable<DataSeries> GetTimeSeries(IEnumerable<string> fieldNames)
             => fieldNames.Select(fieldName => GetTimeSeries(fieldName)).Where(ts => ts != null).Select(ts => ts.Value);
 
 
-        public TimeSeries? GetTimeSeries(string fieldName)
+        public DataSeries? GetTimeSeries(string fieldName)
         {
             var data = DataPoints.FilterByName(fieldName);
 
             if (!data.Any()) return null;
 
-            return new TimeSeries()
+            return new DataSeries()
             {
                 Name = fieldName,
                 ValueType = data.First().Type.Name,
-                Entries = data.Select(e => new TimeSeriesEntry
+                Series = data.Select(e => new DataSeriesEntry
                 {
                     Name = e.Date.ToString(),
                     Value = e.Value,

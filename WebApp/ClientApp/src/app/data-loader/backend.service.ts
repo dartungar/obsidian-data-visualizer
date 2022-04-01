@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TimeSeries } from '../models/TimeSeries';
+import { DataSeries } from '../models/DataSeries';
 import { DataShape } from '../models/DataShape';
 import {
   HttpClient,
@@ -19,7 +19,7 @@ export class BackendService {
   public dataIsLoaded = false; // TODO: better way to track loading state?
   public dataShape: DataShape | undefined;
   public dataAggregate: Object | undefined; // TODO - strict typing for aggregate, like field, unique values / sum of int values, average, etc; computed @ server
-  public data: TimeSeries[] = [];
+  public data: DataSeries[] = [];
   private baseUrl = '/api/data/';
 
   constructor(
@@ -80,9 +80,9 @@ export class BackendService {
       .pipe(catchError(this.handleError));
   }
 
-  loadMultipleTipeSeries(fieldNames: string[]): Observable<TimeSeries[]> {
+  loadMultipleDataSeries(fieldNames: string[]): Observable<DataSeries[]> {
     // TODO: clean current data
-    return this.http.post<TimeSeries[]>(
+    return this.http.post<DataSeries[]>(
       this.baseUrl + 'timeseries',
       JSON.stringify({ fieldNames }),
       {
@@ -91,11 +91,11 @@ export class BackendService {
     ).pipe(catchError(this.handleError));
   }
 
-  loadTimeSeries(fieldName: string): Observable<TimeSeries> {
+  loadDataSeries(fieldName: string): Observable<DataSeries> {
     // delete old data
     this.data = this.data.filter((ts) => ts.name !== fieldName);
     return this.http
-      .get<TimeSeries>(this.baseUrl + 'timeseries', {
+      .get<DataSeries>(this.baseUrl + 'timeseries', {
         params: new HttpParams().set('fieldName', fieldName),
       })
       .pipe(catchError(this.handleError));

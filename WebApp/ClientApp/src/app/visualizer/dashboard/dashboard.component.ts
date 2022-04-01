@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BackendService } from 'src/app/data-loader/backend.service';
-import { TimeSeries } from 'src/app/models/TimeSeries';
+import { DataSeries } from 'src/app/models/DataSeries';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +9,7 @@ import { TimeSeries } from 'src/app/models/TimeSeries';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  dataSets: TimeSeries[] = [];
+  dataSets: DataSeries[] = [];
   fieldNameForm: FormGroup;
 
   constructor(public backend: BackendService, private fb: FormBuilder) {
@@ -23,6 +23,6 @@ export class DashboardComponent implements OnInit {
   onSubmit(): void {
     var fieldName = this.fieldNameForm.get('fieldName')?.value;
     console.log(fieldName);
-    this.backend.loadTimeSeries(fieldName).subscribe((ts) => console.log(ts));
+    this.backend.loadDataSeries(fieldName).subscribe((ts) => console.log(ts));
   }
 }

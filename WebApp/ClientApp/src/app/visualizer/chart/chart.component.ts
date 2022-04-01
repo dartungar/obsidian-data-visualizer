@@ -1,6 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BackendService } from 'src/app/data-loader/backend.service';
-import { TimeSeries, TimeSeriesNgxCharts, TimeSeriesToNgxFormat } from 'src/app/models/TimeSeries';
+import { DataSeries } from 'src/app/models/DataSeries';
 import { NotificationService } from 'src/app/notifications/notification.service';
 import { map } from "rxjs/operators";
 
@@ -21,7 +21,7 @@ enum ChartType {
 export class ChartComponent implements OnInit {
   @Input() fieldNames: string[] = [];
   @Input() chartType: ChartType = ChartType.lineChart;
-  chartData: TimeSeriesNgxCharts[] = []; // FIX ME
+  chartData: DataSeries[] = []; // FIX ME
   view: any = [700, 300];
   xAxis: boolean = true;
   yAxis: boolean = true;
@@ -36,18 +36,14 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.initData(this.fieldNames);
-    console.log("Loaded all data:", this.chartData);
   }
 
   // TODO: move most of loading logic into BackendService, clean mess up
   initData(fieldNames: string[]): void {
     this.chartData = [];
-    this.backend.loadMultipleTipeSeries(fieldNames)
-      //.pipe(map<TimeSeries[], TimeSeriesNgxCharts[]>(
-      //  tsCollection => tsCollection.map<TimeSeriesNgxCharts>(
-      //    ts => TimeSeriesToNgxFormat(ts))
+    this.backend.loadMultipleDataSeries(fieldNames)
       .subscribe(tsCollection => {
-        this.chartData = tsCollection.map(TimeSeriesToNgxFormat);
+        this.chartData = tsCollection;
         console.log("tsCollection:", this.chartData)
       });
   }

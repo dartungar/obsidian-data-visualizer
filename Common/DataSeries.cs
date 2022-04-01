@@ -2,16 +2,16 @@
 namespace Common
 {
     [Serializable] // TODO: это нужно?
-    public struct TimeSeries
+    public struct DataSeries
     {
         public string Name { get; init; }
         public string ValueType { get; init; }
-        public TimeSeriesEntry[] Entries { get; init; }
+        public DataSeriesEntry[] Series { get; init; }
 
     }
 
     [Serializable]
-    public struct TimeSeriesEntry
+    public struct DataSeriesEntry
     {
         public string Name { get; init; }
         public string Value { get; init; }
