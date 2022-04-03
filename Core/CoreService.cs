@@ -1,47 +1,57 @@
-﻿using DataProcessorClass = DataProcessor.DataProcessor;
+﻿using Common;
 using DataProcessor;
 using ObsidianParser;
-using Common;
 
 namespace Core
 {
     public class CoreService
     {
         private IDataProvider _dataProvider;
-        private IEnumerable<DataPoint> _data;
-        private DataProcessorClass _dataProcessor;
-        // TODO: инициализировать Parser с заданной папкой для файла и форматом
+        private IEnumerable<DataPoint> _rawData;
+        private DataProcessorService _dataProcessor;
+        public ProcessedData ProcessedData { get; private set; }
 
-        public void InitDataProvider(string filepath)
+        public void LoadRawData(string filepath)
         {
-            _dataProvider = new ObsidianDataProvider(filepath);
+            _dataProvider = new DataProvider(filepath);
             _dataProvider.ReadData();
         }
 
-        public void InitDataProvider(string filepath, string dailyNoteFormatForRegex)
+        /// <summary>
+        /// Initialize DataProvider and read data
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="dailyNoteFormatForRegex"></param>
+        public void LoadRawData(string filepath, string dailyNoteFormatForRegex)
         {
-            _dataProvider = new ObsidianDataProvider(filepath, dailyNoteFormatForRegex);
+            _dataProvider = new DataProvider(filepath, dailyNoteFormatForRegex);
             _dataProvider.ReadData();
-        }
-
-        public void GetRawData() 
-        {
-            _data = _dataProvider.GetData();            
+            _rawData = _dataProvider.GetData();
         }
 
         public void ProcessData()
         {
-            _dataProcessor = new DataProcessorClass(_data);
-            _dataProcessor.ProcessData();
+            _dataProcessor = new DataProcessorService();
+            // crutch for testing
+            // TODO: fixme
+            _dataProcessor.AddValueDictionary(new Dictionary<string, string>()
+                {
+                    {"low", "1" },
+                    {"volatile", "2" },
+                    {"stable", "3" },
+                    {"high", "4" },
+                    {"very high", "5" },
+                }, "phase");
+            ProcessedData = _dataProcessor.ProcessData(_rawData);
         }
-        
-        // TODO: получить "форму" данных (какие есть поля, какой date range)
-        // TODO: IDataShape тут, реализация в DataProcessor
-        public DataShape GetDataShape() => _dataProcessor.GetDataShape();
+
+        public DataShape GetDataShape() => ProcessedData.DataShape;
 
 
-        public IEnumerable<DataSeries> GetTimeSeries(IEnumerable<string> fieldNames) => _dataProcessor.GetTimeSeries(fieldNames);
-        public DataSeries? GetTimeSeries(string fieldName) => _dataProcessor.GetTimeSeries(fieldName);
+        public IEnumerable<DataSeries> GetDataSeries(IEnumerable<string> fieldNames)
+            => ProcessedData.DataSeriesCollection.Where(ds => fieldNames.Contains(ds.Name));
+
+        public DataSeries? GetDataSeries(string fieldName) => ProcessedData.DataSeriesCollection.FirstOrDefault(ds => ds.Name == fieldName);
 
     }
 }

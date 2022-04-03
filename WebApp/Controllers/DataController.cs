@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common;
 using Core;
-using Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers
 {
@@ -26,8 +26,7 @@ namespace WebApp.Controllers
         {
             await Task.Run(() =>
             {
-                _service.InitDataProvider(requestParams.FolderPath, requestParams.FilenameRegex);
-                _service.GetRawData();
+                _service.LoadRawData(requestParams.FolderPath, requestParams.FilenameRegex);
                 _service.ProcessData();
             });
             return Ok();
@@ -48,14 +47,14 @@ namespace WebApp.Controllers
         [HttpGet("timeseries")]
         public async Task<DataSeries?> GetTimeSeries(string fieldName)
         {
-            return await Task.Run(() => _service.GetTimeSeries(fieldName));
+            return await Task.Run(() => _service.GetDataSeries(fieldName));
         }
 
         [HttpPost("timeseries")]
         public async Task<DataSeries[]> GetMultipleTimeSeries(GetMultipleTimeSeriesRequestParams requestParams)
         {
             return await Task.Run(() => requestParams.FieldNames.Select(
-                f => _service.GetTimeSeries(f)).Where(ts => ts != null).Select(ts => ts.Value).ToArray());
+                f => _service.GetDataSeries(f)).Where(ts => ts != null).Select(ts => ts.Value).ToArray());
         }
 
         public struct GetMultipleTimeSeriesRequestParams

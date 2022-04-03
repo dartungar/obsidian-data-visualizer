@@ -7,7 +7,7 @@ namespace Common
         public string ValueType { get; init; }
         public string[] UniqueValues { get; set; }
     }
-    
+
     public struct DataShape
     {
         public IEnumerable<FieldShape> Fields { get; init; }
