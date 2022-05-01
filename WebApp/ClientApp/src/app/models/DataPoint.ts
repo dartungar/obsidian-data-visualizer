@@ -1,4 +1,4 @@
-export interface DataPoint {
+export interface DataSeriesEntry {
   name: string;
   value: string;
   type?: string;

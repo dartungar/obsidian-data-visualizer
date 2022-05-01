@@ -3,15 +3,8 @@ import { BackendService } from 'src/app/data-loader/backend.service';
 import { DataSeries } from 'src/app/models/DataSeries';
 import { NotificationService } from 'src/app/notifications/notification.service';
 import { map } from "rxjs/operators";
+import { ChartType, ChartParams } from "../../models/Chart";
 
-enum ChartType {
-  lineChart,
-  barChart,
-  areaChart,
-  pieChart,
-  bubbleChart,
-  treeMap,
-}
 
 @Component({
   selector: 'app-chart',
@@ -21,7 +14,8 @@ enum ChartType {
 export class ChartComponent implements OnInit {
   @Input() fieldNames: string[] = [];
   @Input() chartType: ChartType = ChartType.lineChart;
-  chartData: DataSeries[] = []; // FIX ME
+  params: ChartParams | undefined;
+  chartData: DataSeries[] = []; 
   view: any = [700, 300];
   xAxis: boolean = true;
   yAxis: boolean = true;

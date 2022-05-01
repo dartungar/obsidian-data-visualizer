@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\models\Chart.ts" />
     <None Remove="ClientApp\src\app\models\DataSeries.ts" />
     <None Remove="ClientApp\src\app\models\DataShape.ts" />
   </ItemGroup>
@@ -35,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\models\Chart.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\DataShape.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\DataSeries.ts" />
   </ItemGroup>

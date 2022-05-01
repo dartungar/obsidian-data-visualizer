@@ -1,6 +1,6 @@
-import { DataPoint } from './DataPoint';
+import { DataSeriesEntry } from './DataPoint';
 
 export interface DataSeries {
   name: string;
-  series: DataPoint[];
+  series: DataSeriesEntry[];
 }
