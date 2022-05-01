@@ -3,7 +3,7 @@
 <div class="">
   <div class="control">
     <button class="button is-link" (click)="toggleShowAddChartModal()">
-      New chart
+      New Chart
     </button>
   </div>
   <!-- 'add chart' modal; TODO: move to another component? -->
@@ -37,7 +37,7 @@
                   <select formControlName="chartType">
                     <option value="">choose chart type</option>
                     <option
-                      *ngFor="let chartType of chartTypes"
+                      *ngFor="let chartType of chartService.chartTypes"
                       [ngValue]="chartType"
                     >
                       {{ chartType }}
@@ -49,7 +49,7 @@
           </fieldset>
           <div class="field is-grouped">
             <p class="control">
-              <a class="button is-primary" (click)="onSubmit()"> Add Chart </a>
+              <a class="button is-link" (click)="onSubmit()"> Add Chart </a>
             </p>
             <p class="control">
               <a class="button is-light" (click)="toggleShowAddChartModal()">
@@ -69,7 +69,8 @@
 </div>
 <!-- charts -->
 <app-chart
-  *ngFor="let chart of charts"
-  [chartType]="chart.chartType"
+  *ngFor="let chart of chartService.charts; let idx = index"
+  [chartType]="chart.type"
   [fieldNames]="chart.fields"
+  [index]="idx"
 ></app-chart>

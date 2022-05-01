@@ -28,7 +28,6 @@ export class BackendService {
   ) {}
 
   loadAndProcessDataFromFolder(path: string, filenameRegex: string): void {
-    console.log(path, filenameRegex);
     this.isLoading = true;
     this.http
       .post(
@@ -46,6 +45,7 @@ export class BackendService {
           this.dataIsLoaded = true;
           this.data = []; // clear old data
           this.alertService.SuccessAlert('Loaded and processed data');
+          this.getDataShape();
         } else {
           this.dataIsLoaded = false;
         }
@@ -82,13 +82,15 @@ export class BackendService {
 
   loadMultipleDataSeries(fieldNames: string[]): Observable<DataSeries[]> {
     // TODO: clean current data
-    return this.http.post<DataSeries[]>(
-      this.baseUrl + 'timeseries',
-      JSON.stringify({ fieldNames }),
-      {
-        headers: { 'content-type': 'application/json' },
-      }
-    ).pipe(catchError(this.handleError));
+    return this.http
+      .post<DataSeries[]>(
+        this.baseUrl + 'timeseries',
+        JSON.stringify({ fieldNames }),
+        {
+          headers: { 'content-type': 'application/json' },
+        }
+      )
+      .pipe(catchError(this.handleError));
   }
 
   loadDataSeries(fieldName: string): Observable<DataSeries> {

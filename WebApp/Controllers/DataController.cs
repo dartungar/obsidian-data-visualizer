@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         public async Task<DataSeries[]> GetMultipleTimeSeries(GetMultipleTimeSeriesRequestParams requestParams)
         {
             return await Task.Run(() => requestParams.FieldNames.Select(
-                f => _service.GetDataSeries(f)).Where(ts => ts != null).Select(ts => ts.Value).ToArray());
+                f => _service.GetDataSeries(f)).Where(ds => ds != null).Select(ds => ds.Value).ToArray());
         }
 
         public struct GetMultipleTimeSeriesRequestParams

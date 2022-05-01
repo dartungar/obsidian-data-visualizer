@@ -1,11 +1,24 @@
-<ngx-charts-line-chart
-  *ngIf="chartData.length > 0 && chartData[0]"
-  [view]="view"
-  [results]="chartData"
-  [yAxisLabel]="yAxisLabel"
-  [xAxisLabel]="xAxisLabel"
-  [xAxis]="xAxis"
-  [yAxis]="yAxis"
-  [timeline]="timeline"
->
-</ngx-charts-line-chart>
+<div class="card mt-4">
+  <div class="card-content media">
+    <div class="media-left">
+      <div class="level">
+        <h4 class="subtitle">{{ fieldNames }}</h4>
+      </div>
+
+      <ngx-charts-line-chart
+        *ngIf="chartData.length > 0 && chartData[0]"
+        [view]="view"
+        [results]="chartData"
+        [yAxisLabel]="yAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [timeline]="timeline"
+      >
+      </ngx-charts-line-chart>
+    </div>
+    <div class="media-right">
+      <button class="delete" (click)="removeChart()"></button>
+    </div>
+  </div>
+</div>
