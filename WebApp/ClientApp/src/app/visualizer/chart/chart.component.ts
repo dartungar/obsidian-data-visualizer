@@ -23,6 +23,8 @@ export class ChartComponent implements OnInit {
   xAxisLabel: string = 'Date';
   yAxisLabel: string = 'Points';
   timeline: boolean = true;
+  legend = true;
+  legendPosition = 'right';
 
   constructor(
     private backend: BackendService,

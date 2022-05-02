@@ -13,6 +13,8 @@ export class DashboardComponent implements OnInit {
   // dataSets: DataSeries[] = [];
   fieldNameForm: FormGroup;
   showAddChartModal = false;
+  defaultFieldName = 'choose field(-s)';
+  defaultChartType = 'choose chart type';
 
   constructor(
     public backend: BackendService,
@@ -20,8 +22,8 @@ export class DashboardComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.fieldNameForm = this.fb.group({
-      fieldName: ['choose field(-s)'],
-      chartType: ['choose chart type'],
+      fieldName: this.defaultFieldName,
+      chartType: this.defaultChartType,
     });
   }
 
@@ -31,6 +33,14 @@ export class DashboardComponent implements OnInit {
     var fields = this.fieldNameForm.get('fieldName')?.value;
     var chartType = this.fieldNameForm.get('chartType')?.value;
     console.log(fields, chartType);
+    if (
+      fields == '' ||
+      fields == this.defaultFieldName ||
+      chartType == '' ||
+      chartType == this.defaultChartType
+    ) {
+      return;
+    }
     this.chartService.addChart(chartType, fields);
     this.showAddChartModal = false;
   }

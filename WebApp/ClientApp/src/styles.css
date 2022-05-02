@@ -7,6 +7,13 @@ body {
   height: 100%;
 }
 
+.ngx-charts-outer {
+  display: flex;
+  flex-direction: row;
+}
+
 svg.ngx-charts {
   float: none;
 }
+
+
