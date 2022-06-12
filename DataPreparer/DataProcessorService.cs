@@ -72,7 +72,5 @@ namespace DataProcessor
         {
             _valueDictionaries.Add(new ValueDictionaryCustom(typeof(string), dictionary, fieldName));
         }
-
-
     }
 }

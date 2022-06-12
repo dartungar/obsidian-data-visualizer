@@ -4,10 +4,12 @@ export interface Chart {
 }
 
 export enum ChartType {
-  lineChart = 'line',
-  barChart = 'bar',
-  areaChart = 'area',
-  pieChart = 'pie',
-  bubbleChart = 'bubble',
-  treeMapChart = 'treeMap',
+  line = 'line',
+  barVertical = 'barVertical',
+  barHorizontal = 'barHorizontal',
+  area = 'area',
+  pie = 'pie',
+  bubble = 'bubble',
+  treeMap = 'treeMap',
+  heatMap = 'heatMap',
 }

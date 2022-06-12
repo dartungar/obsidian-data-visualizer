@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataPreparer\DataProcessor.csproj" />
     <ProjectReference Include="..\ObsidianParser\ObsidianDataProvider.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
 
 </Project>

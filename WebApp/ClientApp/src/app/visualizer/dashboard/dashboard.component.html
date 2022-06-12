@@ -6,65 +6,10 @@
       New Chart
     </button>
   </div>
-  <!-- 'add chart' modal; TODO: move to another component? -->
   <div class="modal" [ngClass]="{ 'is-active': showAddChartModal === true }">
-    <div class="modal-background" (click)="toggleShowAddChartModal()"></div>
-    <div class="modal-content">
-      <div class="box">
-        <form [formGroup]="fieldNameForm">
-          <fieldset class="field is-horizontal">
-            <div class="field">
-              <label class="label">Field(-s):</label>
-              <div class="control">
-                <div class="select is-multiple">
-                  <select multiple formControlName="fieldName">
-                    <option value="">choose field(-s)</option>
-                    <option
-                      *ngFor="let field of backend.dataShape?.fields"
-                      [ngValue]="field.name"
-                    >
-                      {{ field.name }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="field ml-5">
-              <label class="label">Chart type:</label>
-              <div class="control">
-                <div class="select">
-                  <select formControlName="chartType">
-                    <option value="">choose chart type</option>
-                    <option
-                      *ngFor="let chartType of chartService.chartTypes"
-                      [ngValue]="chartType"
-                    >
-                      {{ chartType }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-          <div class="field is-grouped">
-            <p class="control">
-              <a class="button is-link" (click)="onSubmit()"> Add Chart </a>
-            </p>
-            <p class="control">
-              <a class="button is-light" (click)="toggleShowAddChartModal()">
-                Cancel
-              </a>
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
-    <button
-      class="modal-close is-large"
-      aria-label="close"
-      (click)="toggleShowAddChartModal()"
-    ></button>
+    <app-add-chart-modal
+      (modalClosed)="toggleShowAddChartModal()"
+    ></app-add-chart-modal>
   </div>
 </div>
 <!-- charts -->

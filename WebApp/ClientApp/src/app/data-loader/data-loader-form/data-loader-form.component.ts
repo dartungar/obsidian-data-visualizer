@@ -23,4 +23,8 @@ export class DataLoaderFormComponent implements OnInit {
       this.filenameRegexControl.value
     );
   }
+
+  getLoadText(): string {
+    return this.backend.dataIsLoaded ? "Reload data" : "Load data";
+  }
 }

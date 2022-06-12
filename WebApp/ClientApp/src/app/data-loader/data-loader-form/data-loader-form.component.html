@@ -1,5 +1,5 @@
 <div class="column is-half">
-  <h1 class="title">Load data</h1>
+  <h1 class="title">{{getLoadText()}}</h1>
   <fieldset [disabled]="backend.isLoading">
     <div class="field">
       <label class="label" for="path">Folder path:</label>
@@ -28,11 +28,9 @@
     <div class="field">
       <div class="control">
         <button class="button is-link is-light" (click)="loadData()">
-          Load data
+          {{getLoadText()}}
         </button>
       </div>
     </div>
   </fieldset>
 </div>
-
-<!-- <button class="button" (click)="getDataShape()">Get data shape</button> -->

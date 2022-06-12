@@ -18,7 +18,12 @@ namespace WebApp.Controllers
             _service = service;
         }
 
-
+        [HttpGet("init")]
+        public async Task<IActionResult> Init()
+        {
+            await Task.Run(() => _service.LoadProcessedDataFromLocalStorage());
+            return Ok();
+        }
 
         // TODO: dailyNoteFormatForRegex
         [HttpPost("load")]

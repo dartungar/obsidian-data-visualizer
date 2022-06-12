@@ -6,9 +6,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddChartModalComponent } from './add-chart-modal/add-chart-modal.component';
 
 @NgModule({
-  declarations: [DataExplorerComponent, ChartComponent, DashboardComponent],
+  declarations: [DataExplorerComponent, ChartComponent, DashboardComponent, AddChartModalComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

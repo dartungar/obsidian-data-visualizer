@@ -1,4 +1,6 @@
 using Core;
+using Persistence;
+using DataProcessor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<CoreService>();
+builder.Services.AddTransient<PersistenceService>();
+builder.Services.AddTransient<DataProcessorService>();
 
 var app = builder.Build();
 

@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BackendService } from 'src/app/data-loader/backend.service';
 import { DataSeries } from 'src/app/models/DataSeries';
-import { NotificationService } from 'src/app/notifications/notification.service';
-import { map } from 'rxjs/operators';
 import { ChartType, Chart } from '../../models/Chart';
 import { ChartsService } from '../charts.service';
 
@@ -13,10 +11,9 @@ import { ChartsService } from '../charts.service';
 })
 export class ChartComponent implements OnInit {
   @Input() fieldNames: string[] = [];
-  @Input() chartType: ChartType = ChartType.lineChart;
+  @Input() chartType: ChartType = ChartType.line;
   @Input() index: number = 0;
   params: Chart | undefined;
-  chartData: DataSeries[] = [];
   view: any = [700, 300];
   xAxis: boolean = true;
   yAxis: boolean = true;
@@ -26,6 +23,8 @@ export class ChartComponent implements OnInit {
   legend = true;
   legendPosition = 'right';
 
+  chartData: DataSeries[] = [];
+
   constructor(
     private backend: BackendService,
     private chartService: ChartsService
@@ -33,6 +32,7 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.initData(this.fieldNames);
+    console.log(this.chartType);
   }
 
   initData(fieldNames: string[]): void {

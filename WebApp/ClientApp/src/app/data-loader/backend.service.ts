@@ -5,6 +5,7 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpParams,
+  HttpResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -25,7 +26,19 @@ export class BackendService {
   constructor(
     private http: HttpClient,
     private alertService: NotificationService
-  ) {}
+  ) { }
+
+  tryLoadProcessedDataFromLocalStorage(): void {
+    this.isLoading = true;
+    this.http.get(this.baseUrl + 'init', {observe: "response"})
+      .pipe(catchError(this.handleError))
+      .subscribe((resp) => {
+        if (resp.ok) {
+          this.dataIsLoaded = true;
+          this.isLoading = false;
+        }
+    })
+  }
 
   loadAndProcessDataFromFolder(path: string, filenameRegex: string): void {
     this.isLoading = true;
